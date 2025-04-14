@@ -1,0 +1,15 @@
+[run]
+omit =
+    */migrations/*
+    */tests/*
+    */venv/*
+    manage.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __str__
+    if __name__ == .__main__.:
+
+[html]
+directory = htmlcov
