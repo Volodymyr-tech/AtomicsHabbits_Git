@@ -1,0 +1,38 @@
+[
+  {
+    "model": "users.customuser",
+    "pk": 1,
+    "fields": {
+      "username": "testuser1",
+      "email": "test1@example.com",
+      "password": "pbkdf2_sha256$600000$yFM1M2S8eMC3RbMH2Adb5E$hKIEZXmPyT+g2Y2Cg7hDKDrk7pF9zUT2kA4W0PYtB5g=",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 2,
+    "fields": {
+      "username": "testuser2",
+      "email": "test2@example.com",
+      "password": "pbkdf2_sha256$600000$yFM1M2S8eMC3RbMH2Adb5E$hKIEZXmPyT+g2Y2Cg7hDKDrk7pF9zUT2kA4W0PYtB5g=",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  },
+  {
+    "model": "users.customuser",
+    "pk": 3,
+    "fields": {
+      "username": "testuser3",
+      "email": "test3@example.com",
+      "password": "pbkdf2_sha256$600000$yFM1M2S8eMC3RbMH2Adb5E$hKIEZXmPyT+g2Y2Cg7hDKDrk7pF9zUT2kA4W0PYtB5g=",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
+    }
+  }
+]

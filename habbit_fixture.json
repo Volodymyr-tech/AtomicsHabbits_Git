@@ -1,0 +1,50 @@
+[
+  {
+    "model": "atomicshabbits.habbits",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "place": "Home",
+      "time": "2025-04-16T08:00:00Z",
+      "action": "Drink a glass of water",
+      "is_pleasant_habit": false,
+      "connected_habbit": null,
+      "periodicity": 3,
+      "award": "Listen to music",
+      "time_to_do": 60,
+      "is_public": true
+    }
+  },
+  {
+    "model": "atomicshabbits.habbits",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "place": "Park",
+      "time": "2025-04-16T19:00:00Z",
+      "action": "Evening walk",
+      "is_pleasant_habit": true,
+      "connected_habbit": null,
+      "periodicity": 7,
+      "award": null,
+      "time_to_do": 90,
+      "is_public": false
+    }
+  },
+  {
+    "model": "atomicshabbits.habbits",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "place": "Office",
+      "time": "2025-04-17T13:00:00Z",
+      "action": "Stretch for 2 minutes",
+      "is_pleasant_habit": false,
+      "connected_habbit": 2,
+      "periodicity": 5,
+      "award": null,
+      "time_to_do": 120,
+      "is_public": true
+    }
+  }
+]
