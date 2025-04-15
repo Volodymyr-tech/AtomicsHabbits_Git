@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework.status import HTTP_403_FORBIDDEN
-from rest_framework.test import APIClient, APITestCase
+from rest_framework.test import APITestCase
 
 from atomicshabbits.models import Habbits
 from users.models import CustomUser
@@ -73,7 +73,7 @@ class HabbitsViewSetTestCase(APITestCase):
         self.assertTrue(response.status_code, HTTP_403_FORBIDDEN)
 
     def test_create_habbit(self):
-        url = f"http://127.0.0.1:8002/api/habbits/"
+        url = r"http://127.0.0.1:8002/api/habbits/"
         data = {"place": "Barcelona Los Bunckers", "action": "Walk around"}
         response = self.client.post(url, data, format="json")
         dict_data = response.json()
