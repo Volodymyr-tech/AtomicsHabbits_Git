@@ -12,14 +12,14 @@ def send_notification():
     now = timezone.now()
 
     # We get all the tasks that have a set time and the completion time has already arrived
-    tasks_to_notify = Habbits.objects.filter(time__isnull=False, time__lte=now)
+    tasks_to_notify = Habbits.objects.filter(time__isnull=False, time__lte=now, tg_chat_id__isnull=False)
 
     for habit in tasks_to_notify:
         # Forming a notification message
         message = f"Пора выполнить задачу: {habit.action}."
 
         # Sending a notification
-        rep = SendMessageTelegram(message)
+        rep = SendMessageTelegram(message, habit.user.tg_chat_id)
         rep()
 
         # If the periodicity field is set (and must be at least once a week)
