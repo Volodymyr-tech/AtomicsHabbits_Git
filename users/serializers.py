@@ -20,7 +20,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
-    # tokens = serializers.SerializerMethodField()
+    tg_chat_id = serializers.CharField(required=False)
 
     class Meta:
         model = CustomUser
@@ -38,6 +38,6 @@ class RegisterSerializer(serializers.ModelSerializer):
             username=validated_data["username"],
             email=validated_data["email"],
             password=validated_data["password"],
-            tg_chat_id=validated_data["tg_chat_id"],
+            tg_chat_id=validated_data.get("tg_chat_id", None)
         )
         return user
