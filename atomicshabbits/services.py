@@ -12,7 +12,7 @@ logging.basicConfig(
 
 
 class SendMessageTelegram:
-    def __init__(self, text, chat_id ):
+    def __init__(self, text, chat_id):
         self.__TOKEN = os.getenv("TELEGRAM_TOKEN")
         self.__CHAT_ID = chat_id
         self.text = text

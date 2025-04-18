@@ -16,12 +16,9 @@ class RegisterView(CreateAPIView):
     permission_classes = [AllowAny]  # allow anyone to register
 
 
-    # def perform_create(self, serializer):
-
-
 class UserProfileViewSet(viewsets.ModelViewSet):
     """UserviewSet allows only authenticated admins to see and make changes in objects.'''
-     '''Also you can filter objects by username and email"""
+    '''Also you can filter objects by username and email"""
 
     queryset = CustomUser.objects.all()
     serializer_class = UserProfileSerializer

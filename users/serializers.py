@@ -14,7 +14,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             "phone_number",
             "city",
             "avatar",
-            "tg_chat_id"
+            "tg_chat_id",
         ]
 
 
@@ -24,12 +24,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = (
-            "username",
-            "email",
-            "password",
-            "tg_chat_id"
-        )
+        fields = ("username", "email", "password", "tg_chat_id")
 
     def create(
         self, validated_data
@@ -38,6 +33,6 @@ class RegisterSerializer(serializers.ModelSerializer):
             username=validated_data["username"],
             email=validated_data["email"],
             password=validated_data["password"],
-            tg_chat_id=validated_data.get("tg_chat_id", None)
+            tg_chat_id=validated_data.get("tg_chat_id", None),
         )
         return user
