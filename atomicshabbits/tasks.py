@@ -16,7 +16,7 @@ def send_notification():
 
     for habit in tasks_to_notify:
         # Forming a notification message
-        message = f"Пора выполнить задачу: {habit.action}."
+        message = f"Today: {habit.action},at {habit.place}. Your award will be: {habit.award}"
 
         # Sending a notification
         rep = SendMessageTelegram(message, habit.user.tg_chat_id)
