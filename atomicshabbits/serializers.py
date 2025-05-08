@@ -1,12 +1,10 @@
 from rest_framework import serializers
 
 from atomicshabbits.models import Habbits
-from atomicshabbits.validators import (
-    ConnectedHabitOrRewardValidator,
-    FrequencyOfHabitValidator,
-    PositiveHabitOnlyValidator,
-    RelatedHabitValidator,
-)
+from atomicshabbits.validators import (ConnectedHabitOrRewardValidator,
+                                       FrequencyOfHabitValidator,
+                                       PositiveHabitOnlyValidator,
+                                       RelatedHabitValidator)
 
 # from atomicshabbits.validators import TimeValidator
 
