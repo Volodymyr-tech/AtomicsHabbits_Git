@@ -113,5 +113,5 @@ volumes:
   static_volume:
 
 networks:
-  myapp-net:
+  myapp2-net:
     driver: bridge
