@@ -1,4 +1,4 @@
-FROM python:3.11.2
+FROM python:3.11 AS base
 WORKDIR /app
 
 # Install Poetry
@@ -22,5 +22,9 @@ RUN poetry install --no-root --no-interaction
 COPY . .
 
 
-EXPOSE 8000
+
+FROM base AS backend
+
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8002"]
+
+EXPOSE 8002
