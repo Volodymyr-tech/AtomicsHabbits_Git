@@ -123,14 +123,14 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             set -xe
-            cd ~/myapp/DRF-Education-Platform-API
+            cd ~/myapp/habbits
+               
+            git pull origin develop
                
             docker system prune -a --volumes -f
-            docker stop $(docker ps -q)      
-            docker rm $(docker ps -aq)
-            docker rmi -f $(docker images -a -q)
-          
-            docker pull 
-            docker compose up -d .env
+
+            docker compose down --remove-orphans
+
+            docker compose up -d
           
           EOF
