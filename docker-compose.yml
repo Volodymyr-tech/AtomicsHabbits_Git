@@ -24,6 +24,8 @@ services: # describing services we're going to use
     depends_on: # it will run only if DB connection is True
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
       - myapp2-net
 
@@ -39,6 +41,55 @@ services: # describing services we're going to use
       interval: 30s
       timeout: 10s
       retries: 5
+    networks:
+      - myapp2-net
+
+  redis:
+    image: redis:7 # using image from DockerHub
+    env_file: # giving access to environment variables
+      - .env
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli', 'ping']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - myapp2-net
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: celery
+    image: valdemarbackend/myapp2-celery
+    env_file:
+      - .env
+    command: >
+      celery -A config worker -l INFO -P eventlet
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    networks:
+      - myapp2-net
+
+  celery_beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: beat
+    image: valdemarbackend/myapp2-beat
+    env_file:
+      - .env
+    command: >
+      sh -c "python manage.py migrate && \
+             celery -A config beat -l INFO -S django"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
     networks:
       - myapp2-net
 
@@ -62,5 +113,5 @@ volumes:
   static_volume:
 
 networks:
-  myapp2-net:
+  myapp-net:
     driver: bridge

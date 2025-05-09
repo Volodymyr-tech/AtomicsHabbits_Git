@@ -24,7 +24,14 @@ COPY . .
 
 
 FROM base AS backend
-
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8002"]
+
+# Celery worker
+FROM base AS celery
+CMD ["celery", "-A app worker", "--loglevel=info"]
+
+# Celery beat
+FROM base AS beat
+CMD ["celery", "-A app beat", "--loglevel=info"]
 
 EXPOSE 8002
