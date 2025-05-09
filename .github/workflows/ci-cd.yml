@@ -123,7 +123,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             set -xe
-            cd ~/myapp/habbits
+            cd ~/habbits
                
             git pull origin develop
                
