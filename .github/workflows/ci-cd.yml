@@ -123,20 +123,21 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           
+          set -xe
+    
           cd ~
+    
           if [ ! -d "habbits/.git" ]; then
+            rm -rf habbits
             git clone -b develop https://github.com/Volodymyr-tech/AtomicsHabbits_Git.git habbits
           else
             cd habbits
             git pull origin develop
           fi
-
+    
           cd habbits
-               
-          docker system prune -a --volumes -f
-
-          docker compose down --remove-orphans
-
-          docker compose up -d
-          
+    
+          sudo docker system prune -a --volumes -f || true
+          sudo docker compose down --remove-orphans || true
+          sudo docker compose up -d || true
           EOF
