@@ -88,7 +88,6 @@ jobs:
           USER=${{ secrets.DOCKER_HUB_USERNAME }}
           
           docker pull
-          
 
       - name: Pull official Postgres & push to your Hub
         run: |
