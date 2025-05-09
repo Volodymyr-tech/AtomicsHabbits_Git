@@ -83,10 +83,12 @@ jobs:
       - name: Build all images using docker-compose
         run: docker compose build
 
-      - name: Push backend and nginx images
+      - name: Push backend, nginx, celery and celery beat images
         run: |
           docker push valdemarbackend/myapp2-backend
           docker push valdemarbackend/myapp2-nginx
+          docker push valdemarbackend/myapp2-celery
+          docker push valdemarbackend/myapp2-beat
 
       - name: Pull & Push official Postgres and Redis
         run: |
