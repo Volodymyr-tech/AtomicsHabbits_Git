@@ -83,23 +83,20 @@ jobs:
       - name: Build all images using docker-compose
         run: docker compose build
 
-      - name: Tag and push images
+      - name: Push backend and nginx images
         run: |
-          USER=${{ secrets.DOCKER_HUB_USERNAME }}
-          
-          docker pull
+          docker push valdemarbackend/myapp2-backend
+          docker push valdemarbackend/myapp2-nginx
 
-      - name: Pull official Postgres & push to your Hub
+      - name: Pull & Push official Postgres and Redis
         run: |
           docker pull postgres:17
-          docker tag postgres:17 ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-postgres:17
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-postgres:17
-
-      - name: Pull official Redis & push to your Hub
-        run: |
+          docker tag postgres:17 valdemarbackend/myapp2-postgres:17
+          docker push valdemarbackend/myapp2-postgres:17
+  
           docker pull redis:7
-          docker tag redis:7 ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-redis:7
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/myapp-redis:7
+          docker tag redis:7 valdemarbackend/myapp2-redis:7
+          docker push valdemarbackend/myapp2-redis:7
 
 
 

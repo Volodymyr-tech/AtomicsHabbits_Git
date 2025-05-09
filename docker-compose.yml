@@ -3,7 +3,11 @@ version: '3.9'
 services: # describing services we're going to use
 
   web:
-    build: . # it uses DockerFile in main directory and install Python and Django code
+    build:  # it uses DockerFile in main directory and install Python and Django code
+      context: .
+      dockerfile: Dockerfile
+      target: backend
+    image: valdemarbackend/myapp2-backend
     env_file:
       - .env # giving access to environment variables
     command: >
@@ -20,8 +24,8 @@ services: # describing services we're going to use
     depends_on: # it will run only if DB connection is True
       db:
         condition: service_healthy
-      redis:
-        condition: service_healthy
+    networks:
+      - myapp2-net
 
 
   db:
@@ -35,63 +39,28 @@ services: # describing services we're going to use
       interval: 30s
       timeout: 10s
       retries: 5
-
-  redis:
-    image: redis:7 # using image from DockerHub
-    env_file: # giving access to environment variables
-      - .env
-    healthcheck:
-      test: ['CMD-SHELL', 'redis-cli', 'ping']
-      interval: 30s
-      timeout: 10s
-      retries: 5
-
-  celery:
-    build: .
-    env_file:
-      - .env
-    command:
-      - celery
-      - -A
-      - config
-      - worker
-      - -l
-      - INFO
-      - -P
-      - eventlet
-    volumes:
-      - .:/app
-    depends_on:
-      - db
-      - redis
-
-  celery_beat:
-    build: .
-    env_file:
-      - .env
-      - .env.docker
-    command: >
-      sh -c "python manage.py migrate && \
-             celery -A config beat -l INFO -S django"
-    volumes:
-      - .:/app
-    depends_on:
-      - db
-      - redis
+    networks:
+      - myapp2-net
 
   nginx:
     build:
       context: ./nginx  # path to the directory with Dockerfile and nginx.conf
+    image: valdemarbackend/myapp2-nginx
     ports:
       - "80:80" # mapping host port with docker port
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./staticfiles:/app/staticfiles
+      - static_volume:/app/staticfiles
     depends_on:
       - web
-
+    networks:
+      - myapp2-net
 
 
 volumes:
   postgres_data:
   static_volume:
+
+networks:
+  myapp-net:
+    driver: bridge
