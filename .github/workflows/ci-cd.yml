@@ -122,15 +122,21 @@ jobs:
       - name: Deploy to server pull code, clean up & restart
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            set -xe
-            cd ~/habbits
-               
+          
+          cd ~
+          if [ ! -d "habbits/.git" ]; then
+            git clone -b develop https://github.com/Volodymyr-tech/AtomicsHabbits_Git.git habbits
+          else
+            cd habbits
             git pull origin develop
+          fi
+
+          cd habbits
                
-            docker system prune -a --volumes -f
+          docker system prune -a --volumes -f
 
-            docker compose down --remove-orphans
+          docker compose down --remove-orphans
 
-            docker compose up -d
+          docker compose up -d
           
           EOF
