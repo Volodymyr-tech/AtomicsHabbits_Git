@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["http://84.252.134.236/", "http://localhost/"]
+ALLOWED_HOSTS = ["84.252.134.236", "localhost", "127.0.0.1",]
 
 
 # Application definition
@@ -184,10 +184,12 @@ SIMPLE_JWT = {
 # Settings for Celery
 
 # The URL of the message broker
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"  # For example, Redis, which runs on port 6379 by default.
+CELERY_BROKER_URL = os.getenv(
+    "CELERY_BROKER_URL"
+)   # For example, Redis, which runs on port 6379 by default.
 
 # The URL of the results broker, also Redis
-CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
 
 # timezone
 CELERY_TIMEZONE = "UTC"
