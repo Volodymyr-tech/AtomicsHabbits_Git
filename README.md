@@ -19,6 +19,30 @@ Pytest + Coverage
 
 Flake8 + Black
 
+
+## 🚀 Quick Start with Docker Compose
+- Make sure you have Docker and Docker Compose installed on your machine
+
+###  Clone the repository
+- git clone -b develop https://github.com/Volodymyr-tech/AtomicsHabbits_Git.git
+- cd AtomicsHabbits_Git
+
+### Create a .env file
+#### In the project root directory, create a .env file with the following variables:
+
+- SECRET_KEY=your_django_secret_key
+- DEBUG=
+- POSTGRES_DB=habits_db
+- POSTGRES_USER=postgres
+- POSTGRES_PASSWORD=postgres
+- DB_HOST=db
+- DB_PORT=5432
+- ALLOWED_HOSTS=127.0.0.1,localhost
+
+### Build and start containers
+- docker compose build
+- docker compose up -d
+
 ## 📦 Installation  (with Poetry)
 - git clone https://github.com/Volodymyr-tech/AtomicsHabbits_Git.git
 
