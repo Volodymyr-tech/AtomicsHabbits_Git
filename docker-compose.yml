@@ -1,0 +1,116 @@
+
+services: # describing services we're going to use
+
+  web:
+    build:  # it uses DockerFile in main directory and install Python and Django code
+      context: .
+      dockerfile: Dockerfile
+      target: backend
+    image: valdemarbackend/myapp2-backend
+    env_file:
+      - .env # giving access to environment variables
+    command: >
+      sh -c "python manage.py makemigrations && \
+             python manage.py migrate && \
+             python manage.py collectstatic --noinput && \
+             gunicorn config.wsgi:application --bind 0.0.0.0:8002"
+
+    volumes:
+      - .:/app # we use main directory and docker directory /app for saving changing in code
+      - static_volume:/app/staticfiles # it allows us to save data even if container was stopped
+    ports: # mapping host port with docker container port
+      - "8002:8002"
+    depends_on: # it will run only if DB connection is True
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - myapp2-net
+
+
+  db:
+    image: postgres:17 # using image from DockerHub
+    env_file: # giving access to environment variables
+      - .env
+    volumes:  # it allows us to save data even if container was stopped
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck: # testing DB before we start server
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - myapp2-net
+
+  redis:
+    image: redis:7 # using image from DockerHub
+    env_file: # giving access to environment variables
+      - .env
+    healthcheck:
+      test: ['CMD-SHELL', 'redis-cli', 'ping']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - myapp2-net
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: celery
+    image: valdemarbackend/myapp2-celery
+    env_file:
+      - .env
+    command: >
+      celery -A config worker -l INFO -P eventlet
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    networks:
+      - myapp2-net
+
+  celery_beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: beat
+    image: valdemarbackend/myapp2-beat
+    env_file:
+      - .env
+    command: >
+      sh -c "python manage.py migrate && \
+             celery -A config beat -l INFO -S django"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    networks:
+      - myapp2-net
+
+  nginx:
+    build:
+      context: ./nginx  # path to the directory with Dockerfile and nginx.conf
+    image: valdemarbackend/myapp2-nginx
+    ports:
+      - "80:80" # mapping host port with docker port
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - static_volume:/app/staticfiles
+    depends_on:
+      - web
+    networks:
+      - myapp2-net
+
+
+volumes:
+  postgres_data:
+  static_volume:
+
+networks:
+  myapp2-net:
+    driver: bridge
